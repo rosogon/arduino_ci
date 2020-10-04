@@ -186,7 +186,8 @@ module ArduinoCI
     # @param [Array<String>] aux_libraries
     # @return [Array<Pathname>]
     def cpp_files_libraries(aux_libraries)
-      arduino_library_src_dirs(aux_libraries).map { |d| cpp_files_in(d) }.flatten.uniq
+      l = arduino_library_src_dirs(aux_libraries).map { |d| cpp_files_in(d) }.flatten.uniq
+      l = l.reject { |p| @exclude_dirs.any? { |d| p.dirname.to_s.end_with?(d.to_s) } }
     end
 
     # Returns the Pathnames for all paths to exclude from testing and compilation
